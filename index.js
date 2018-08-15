@@ -4,13 +4,16 @@ export default {
      * @param  {Vue} Vue
      * @param  {object} options  lazyload options
      */
-    install(Vue, options = {}) {
+	install: function(Vue, options) {
+
+		options = typeof options == 'undefined' ? {} : options;
+
         Vue.directive("wow", {
-            bind(el, binding) {
-                let animateCofig = binding.value;
+            bind: function(el, binding) {
+                var animateCofig = binding.value;
                 el.style.visibility = "hidden";
                 el.style["animation-name"] = "none";
-                let offsetTop = function(element) {
+                var offsetTop = function(element) {
                     var top;
                     while (element.offsetTop === void 0) {
                         element = element.parentNode;
@@ -21,14 +24,14 @@ export default {
                     }
                     return top;
                 };
-                let isVisible = function(el) {
+                var isVisible = function(el) {
                     var top, viewBottom, viewTop;
                     viewTop = window.pageYOffset;
                     viewBottom = viewTop + window.innerHeight;
                     top = offsetTop(el);
                     return top <= viewBottom;
                 };
-                let isShow = function(el, animateCofig) {
+                var isShow = function(el, animateCofig) {
                     if (isVisible(el)) {
                         el.style.visibility = "visible";
                         for (name in animateCofig) {
@@ -38,7 +41,7 @@ export default {
                     }
                 };
                 var lastClick = Date.now();
-                let fandelScroll = function() {
+                var fandelScroll = function() {
                     var rate = 100;
                     if (Date.now() - lastClick >= rate) {
                         isShow(el, animateCofig);
